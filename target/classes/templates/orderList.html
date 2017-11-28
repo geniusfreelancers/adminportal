@@ -37,18 +37,24 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr data-th-each="order : ${ordersList}">
+					<tr th:if="${emptyOrder}">
+						<td>No orders to dispaly</td>
+					</tr>
+					<tr th:if="!${emptyOrder}" data-th-each="order : ${ordersList}">
 						<td class="col-md-1">
 						<input hidden="hidden" name="id" th:value="${order.id}"/>
 						<input th:id="'selected'+${order.id}" class="checkboxProduct" type="checkbox" />
 						</td>
 						<td class="col-md-4">
-								<a th:href="@{/product/productInfo(id=${order.id})}">
+								<a th:href="@{/order/orderdetails/}+${order.id}">
 									<span th:text="${order.id}"></span>
 								</a>
 						</td>
 						
-						<td th:text="${order.user.firstName}" class="col-md-1"></td>
+						<td class="col-md-1">
+							<span th:text="${order.shippingAddress.firstName}"></span> 
+							<span th:text="${order.shippingAddress.lastName}"></span>
+						</td>
 						<td th:text="${order.shippingMethod}" class="col-md-1"></td>
 						<td class="col-md-2">
 							<strong>Our Price: </strong> <span th:text="${order.orderTotal}"></span>

@@ -14,6 +14,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.adminportal.domain.BillingAddress;
+import com.adminportal.domain.CartItem;
+import com.adminportal.domain.Payment;
+import com.adminportal.domain.ShippingAddress;
+import com.adminportal.domain.User;
+
 @Entity
 @Table(name="user_order")
 public class Order {
@@ -25,8 +31,18 @@ public class Order {
 	private Date shippingDate;
 	private String shippingMethod;
 	private String orderStatus;
-	private BigDecimal orderTotal;
+	private String paymentType;
+	private String paymentConfirm;
+	private String orderType;
 	private String orderEmail;
+	private String orderPhone;
+	private BigDecimal orderSubtotal;
+	private BigDecimal estTax;
+	private String promocodeApplied;
+	private BigDecimal discount;
+	private BigDecimal shippingCost;
+	private BigDecimal orderTotal;
+	
 	
 	@OneToMany(mappedBy = "order", cascade=CascadeType.ALL)
 	private List<CartItem> cartItemList;
@@ -131,12 +147,84 @@ public class Order {
 		this.user = user;
 	}
 
+	public String getPaymentType() {
+		return paymentType;
+	}
+
+	public void setPaymentType(String paymentType) {
+		this.paymentType = paymentType;
+	}
+
+	public String getPaymentConfirm() {
+		return paymentConfirm;
+	}
+
+	public void setPaymentConfirm(String paymentConfirm) {
+		this.paymentConfirm = paymentConfirm;
+	}
+
+	public String getOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(String orderType) {
+		this.orderType = orderType;
+	}
+
 	public String getOrderEmail() {
 		return orderEmail;
 	}
 
 	public void setOrderEmail(String orderEmail) {
 		this.orderEmail = orderEmail;
+	}
+
+	public String getOrderPhone() {
+		return orderPhone;
+	}
+
+	public void setOrderPhone(String orderPhone) {
+		this.orderPhone = orderPhone;
+	}
+
+	public BigDecimal getOrderSubtotal() {
+		return orderSubtotal;
+	}
+
+	public void setOrderSubtotal(BigDecimal orderSubtotal) {
+		this.orderSubtotal = orderSubtotal;
+	}
+
+	public BigDecimal getEstTax() {
+		return estTax;
+	}
+
+	public void setEstTax(BigDecimal estTax) {
+		this.estTax = estTax;
+	}
+
+	public String getPromocodeApplied() {
+		return promocodeApplied;
+	}
+
+	public void setPromocodeApplied(String promocodeApplied) {
+		this.promocodeApplied = promocodeApplied;
+	}
+
+	public BigDecimal getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(BigDecimal discount) {
+		this.discount = discount;
+	}
+
+	public BigDecimal getShippingCost() {
+		return shippingCost;
+	}
+
+	public void setShippingCost(BigDecimal shippingCost) {
+		this.shippingCost = shippingCost;
 	}
 	
 	
