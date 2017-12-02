@@ -5,12 +5,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.adminportal.domain.Order;
+import com.adminportal.domain.User;
 import com.adminportal.service.OrderService;
+import com.adminportal.service.UserService;
 import com.braintreegateway.BraintreeGateway;
 import com.braintreegateway.Transaction;
 import com.braintreegateway.Transaction.Status;
@@ -34,10 +37,14 @@ public class OrderController {
     
 	@Autowired
 	private OrderService orderService;
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping("/orderList")
-	public String orderList(Model model){
-		List<Order> ordersList = orderService.findAll();
+	public String orderList(Model model,@AuthenticationPrincipal User activeUser){
+		User user = userService.findByUsername(activeUser.getUsername());
+        model.addAttribute("user", user);
+		List<Order> ordersList = orderService.findAllByOrderDateDesc();
 		model.addAttribute("ordersList", ordersList);
 		if(ordersList == null) {
 			model.addAttribute("emptyOrder", true);
