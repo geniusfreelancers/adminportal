@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,20 +33,26 @@ import com.adminportal.domain.Category;
 import com.adminportal.domain.Product;
 import com.adminportal.domain.SubCategory;
 import com.adminportal.domain.SubSubCategory;
+import com.adminportal.domain.User;
 import com.adminportal.service.CategoryService;
 import com.adminportal.service.ProductService;
+import com.adminportal.service.UserService;
 
 @Controller
 @RequestMapping("/product")
 public class ProductController {
 	
 	@Autowired
+	private UserService userService;
+	@Autowired
 	private ProductService productService;
 	@Autowired
 	private CategoryService categoryService;
 	
 	@RequestMapping(value="/add", method=RequestMethod.GET)
-	public String addProduct(Model model){
+	public String addProduct(Model model,@AuthenticationPrincipal User activeUser){
+		User user = userService.findByUsername(activeUser.getUsername());
+        model.addAttribute("user", user);
 		Product product = new Product();
 		List<Category> categories =  categoryService.findAllCategories();
 		model.addAttribute("categories", categories);
@@ -97,6 +104,7 @@ public class ProductController {
 					if(count == 1) {
 					product.setCoverImageName(newFileName);
 					}
+					//String PATH = "http:\\localhost:8083\\image\\product/";
 					String PATH = "src/main/resources/static/image/product/";
 				    
 					String folderName =  PATH.concat(Long.toString(product.getId()));
@@ -140,7 +148,9 @@ public class ProductController {
 	
 
 	@RequestMapping("/productInfo")
-	public String productInfo(@RequestParam("id") Long id, Model model){
+	public String productInfo(@RequestParam("id") Long id, Model model,@AuthenticationPrincipal User activeUser){
+		User user = userService.findByUsername(activeUser.getUsername());
+        model.addAttribute("user", user);
 		Product product = productService.findOne(id);
 		String availableSize = product.getSize();
 		List<String> sizeList = Arrays.asList(availableSize.split("\\s*,\\s*"));
@@ -168,7 +178,9 @@ public class ProductController {
 	
 	
 	@RequestMapping("/updateProduct")
-	public String updateProduct(@RequestParam("id") Long id, Model model){
+	public String updateProduct(@RequestParam("id") Long id, Model model,@AuthenticationPrincipal User activeUser){
+		User user = userService.findByUsername(activeUser.getUsername());
+        model.addAttribute("user", user);
 		Product product = productService.findOne(id);
 		List<Category> categories =  categoryService.findAllCategories();
 		for (Category cat : categories) {
@@ -192,8 +204,7 @@ public class ProductController {
 	
 	@RequestMapping(value="/updateProduct", method=RequestMethod.POST)
 	public String updateProductPost(
-			@Valid @ModelAttribute("product") Product product, BindingResult result, HttpServletRequest request
-			){
+			@Valid @ModelAttribute("product") Product product, BindingResult result, HttpServletRequest request) {
 		boolean removefile=true;
 		
 		productService.save(product);
@@ -300,10 +311,12 @@ public class ProductController {
 	
 	
 	@RequestMapping("/productList")
-	public String productList(Model model){
+	public String productList(Model model,@AuthenticationPrincipal User activeUser){
+		User user = userService.findByUsername(activeUser.getUsername());
+        model.addAttribute("user", user);
 		List<Product> productList = productService.findAll();
 		model.addAttribute("productList", productList);
-		
+
 		return "productList";
 		
 	}

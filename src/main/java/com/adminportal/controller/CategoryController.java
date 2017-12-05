@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,16 +17,22 @@ import com.adminportal.domain.Category;
 import com.adminportal.domain.Product;
 import com.adminportal.domain.SubCategory;
 import com.adminportal.domain.SubSubCategory;
+import com.adminportal.domain.User;
 import com.adminportal.service.CategoryService;
+import com.adminportal.service.UserService;
 
 @Controller
 @RequestMapping("/category")
 public class CategoryController {
 	@Autowired
 	private CategoryService categoryService;
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping("/categories")
-	public String categoryList(Model model){
+	public String categoryList(Model model,@AuthenticationPrincipal User activeUser){
+		User user = userService.findByUsername(activeUser.getUsername());
+        model.addAttribute("user", user);
 		List<Category> categoryList = categoryService.findAllCategories();
 		model.addAttribute("categoryList", categoryList);
 		
@@ -33,7 +40,9 @@ public class CategoryController {
 	}
 	
 	@RequestMapping("/addcategory")
-	public String addcategory(Model model){
+	public String addcategory(Model model,@AuthenticationPrincipal User activeUser){
+		User user = userService.findByUsername(activeUser.getUsername());
+        model.addAttribute("user", user);
 		List<Category> categoryList = categoryService.findAllCategories();
 		model.addAttribute("categoryList", categoryList);
 		List<Category> supercategoryList = new ArrayList<Category>();
