@@ -3,10 +3,8 @@ package com.adminportal.controller;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -16,8 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.adminportal.domain.Product;
 import com.adminportal.domain.SiteSetting;
 import com.adminportal.domain.User;
 import com.adminportal.repository.StaticPageRepository;
@@ -34,6 +30,7 @@ public class HomeController {
 	
 	@Autowired
 	private SiteSettingService siteSettingService;
+
 	
 	@Autowired
 	private StaticPageService staticPageService;
@@ -51,6 +48,7 @@ public class HomeController {
 		User user = userService.findByUsername(activeUser.getUsername());
 		SiteSetting siteSettings = siteSettingService.findOne(new Long(1));
 		model.addAttribute("siteSettings",siteSettings);
+
         model.addAttribute("user", user);
 		return "home";
 	}
@@ -199,4 +197,6 @@ public class HomeController {
 		staticPageRepository.save(staticpage); 
 		return "redirect:/pages";
 	}
-}
+
+	}
+

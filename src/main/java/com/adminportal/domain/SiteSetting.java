@@ -14,6 +14,7 @@ public class SiteSetting {
 	private BigDecimal shippingCost;
 	private String homeSlide;
 	private BigDecimal premiumShippingCost;
+
 	
 	private String categoryBanner;
 	private String storeAddress1;
@@ -26,6 +27,7 @@ public class SiteSetting {
 	private String storeSupportEmail;
 	private String storeInfoEmail;
 	private boolean loginKillSwitch;
+
 	
 	public Long getId() {
 		return id;
@@ -56,6 +58,7 @@ public class SiteSetting {
 	}
 	public void setPremiumShippingCost(BigDecimal premiumShippingCost) {
 		this.premiumShippingCost = premiumShippingCost;
+
 	}
 	public String getCategoryBanner() {
 		return categoryBanner;
@@ -122,6 +125,7 @@ public class SiteSetting {
 	}
 	public void setLoginKillSwitch(boolean loginKillSwitch) {
 		this.loginKillSwitch = loginKillSwitch;
+
 	}	
 	
 	
