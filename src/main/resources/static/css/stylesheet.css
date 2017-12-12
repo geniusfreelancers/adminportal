@@ -3,7 +3,12 @@
             CUSTOM STYLE
 
 ******************************************/
-
+.uppercase{
+	text-transform: uppercase;
+}
+.capitalize{
+	text-transform:capitalize;
+}
 .info_wrapper {
     display: block;
     text-align: center;

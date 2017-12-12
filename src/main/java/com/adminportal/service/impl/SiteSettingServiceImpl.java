@@ -25,4 +25,9 @@ public class SiteSettingServiceImpl implements SiteSettingService{
 	public List<SiteSetting> findAll() {
 		return (List<SiteSetting>) siteSettingRepository.findAll();	
 	}
+
+	public void save(SiteSetting siteSettings) {
+		siteSettingRepository.save(siteSettings);
+		
+	}
 }
