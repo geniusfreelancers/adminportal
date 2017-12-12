@@ -57,7 +57,7 @@
         </div>
 
         <!--logo start-->
-        <a th:href="@{/}" class="logo"><img th:src="@{/image/logowhite.png}" title="Polishop" alt="Polishop" /></a>
+        <a th:href="@{/}" class="logo"><img th:src="@{/image/logowhite.png}" title="KolyStyle" alt="KolyStyle" /></a>
         <!--logo end-->
 
         <div class="nav search-row" id="top_menu">
@@ -276,9 +276,11 @@
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="profile-ava">
-                                <img alt="" th:src="@{/image/avatar1_small.jpg}"/>
+                                <img th:if="${user.gender == 'male'}" alt="" th:src="@{/image/avatar1_small.jpg}"/>
+                                <img th:if="${user.gender == 'female'}" alt="" th:src="@{/image/avatar1-female.jpg}"/>
                             </span>
-                        <span class="username">Jenifer Smith</span>
+                        <span class="username"><span
+							th:text="${user}? ${#strings.toUpperCase(user.firstName+' '+user.lastName)} : 'Welcome Guest'"></span></span>
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu extended logout">
@@ -319,7 +321,7 @@
             <!-- sidebar menu start-->
             <ul class="sidebar-menu">
                 <li class="active">
-                    <a class="" th:href="@{/admin}">
+                    <a class="" th:href="@{/}">
                         <i class="icon_house_alt"></i>
                         <span>Dashboard</span>
                     </a>
@@ -388,7 +390,8 @@
                         <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                     <ul class="sub">
-                        <li><a class="" href="basic_table.html">Basic Table</a></li>
+                        <li><a class="" th:href="@{/settings.html}">General</a></li>
+                        <li><a class="" th:href="@{/homesettings.html}">Home Page</a></li>  
                     </ul>
                 </li>
 
@@ -399,8 +402,8 @@
                         <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                     <ul class="sub">
-                        <li><a class="" href="profile.html">Profile</a></li>
-                        <li><a class="" href="login.html"><span>Login Page</span></a></li>
+                        <li><a class="" th:href="@{/pages}">All Pages</a></li>
+                        <li><a class="" th:href="@{/pages/add}"><span>Add Page</span></a></li>
                         <li><a class="" href="blank.html">Blank Page</a></li>
                         <li><a class="" href="404.html">404 Error</a></li>
                     </ul>
