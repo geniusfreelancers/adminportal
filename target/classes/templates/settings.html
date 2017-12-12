@@ -22,6 +22,7 @@
 <!-- Start -->
 <div class="row">
 
+
 <!-- Panel Start -->
 <div class="row">
 
@@ -60,6 +61,14 @@
 							</label> 
 			</div>											
 									<!-- Minimum for free shipping -->
+
+
+	
+
+	
+				
+				<!-- title -->
+
 					<div class="form-group">
 						<label for="freeShippingMin">Minimum for Free Shipping</label>
 						
@@ -68,6 +77,7 @@
 								placeholder="Minimum for Free Shipping" /> 
 						
 					</div>
+
 					<div class="row">
 										
 										<div class="col-xs-6">
@@ -93,6 +103,19 @@
 												</div>
 										</div>
 									</div>
+
+					
+					<!-- Slug -->
+					<div class="form-group">
+						<label for="shippingCost">Shipping Cost</label>
+						
+							<input type="number" name="shippingCost" class="form-control" id="shippingCost"
+								th:value="${siteSettings.shippingCost}" required="required"
+								placeholder="Shipping Cost" /> 
+						
+					</div>
+					
+
 					<!-- Slides -->
 					<div class="form-group">
 						<label for="homeSlide">Home Page Slides</label>
@@ -102,13 +125,12 @@
 								placeholder="Home Page Slides" /> 
 						
 					</div>
-
-								</div>
-							</div>
+							
 						</div>
 					</div>
 					</div>
 					</div>
+					</div></div>
 					<div class="col-md-6">
 					<!-- Store Address Settings -->
 					
@@ -215,15 +237,16 @@
 					</div>
 					
 					</div>
-	
-					
-								
+									
 	</form>
 					</div>
 <!-- Panel End -->
 
 	
-</div>
+
+		</div>
+		
+
 	
 	
 	<!-- End -->
