@@ -85,7 +85,7 @@
 												<div class="form-group">
 													<label for="shippingCost">Ground Shipping Cost</label>
 													
-														<input type="number" name="shippingCost" class="form-control" id="shippingCost"
+														<input type="number" name="shippingCost" class="form-control" id="shippingCost" step="0.1"
 															th:value="${siteSettings.shippingCost}" required="required"
 															placeholder="Ground Shipping Cost" /> 
 													
@@ -97,7 +97,7 @@
 													<label for="premiumShippingCost">Premium Shipping Cost</label>
 													
 														<input type="number" name="premiumShippingCost" class="form-control" id="premiumShippingCost"
-															th:value="${siteSettings.premiumShippingCost}" required="required"
+															step="0.1" th:value="${siteSettings.premiumShippingCost}" required="required"
 															placeholder="Premium Shipping Cost" /> 
 													
 												</div>
