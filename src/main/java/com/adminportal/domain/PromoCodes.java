@@ -20,6 +20,11 @@ public class PromoCodes {
 	private BigDecimal cartTotal;
 	private int cartItemQty;
 	private int promoUseCount;
+	private int promoUsedCount;
+	private String addedBy;
+	private Date addedOn;
+	private String updatedBy;
+	private Date updatedOn;
 	
 	//Either Specific User or All
 	private String promoType;
@@ -114,6 +119,47 @@ public class PromoCodes {
 	public void setPromoStatus(boolean promoStatus) {
 		this.promoStatus = promoStatus;
 	}
+
+	public int getPromoUsedCount() {
+		return promoUsedCount;
+	}
+
+	public void setPromoUsedCount(int promoUsedCount) {
+		this.promoUsedCount = promoUsedCount;
+	}
+
+	public String getAddedBy() {
+		return addedBy;
+	}
+
+	public void setAddedBy(String addedBy) {
+		this.addedBy = addedBy;
+	}
+
+	public Date getAddedOn() {
+		return addedOn;
+	}
+
+	public void setAddedOn(Date addedOn) {
+		this.addedOn = addedOn;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+	public Date getUpdatedOn() {
+		return updatedOn;
+	}
+
+	public void setUpdatedOn(Date updatedOn) {
+		this.updatedOn = updatedOn;
+	}
+	
 	
 	
 }
