@@ -1,6 +1,8 @@
 package com.adminportal.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,7 @@ import com.adminportal.domain.PromoCodes;
 import com.adminportal.domain.SiteSetting;
 import com.adminportal.domain.StaticPage;
 import com.adminportal.domain.User;
+import com.adminportal.repository.PromoCodesRepository;
 import com.adminportal.service.PromoCodesService;
 import com.adminportal.service.SiteSettingService;
 import com.adminportal.service.UserService;
@@ -35,8 +38,11 @@ public class CouponController {
 	@Autowired
 	private PromoCodesService promoCodesService;
 	
+	@Autowired
+	private PromoCodesRepository promoCodesRepository;
+	
 	@RequestMapping("/allcoupons")
-	public String pages(Model model,@AuthenticationPrincipal User activeUser) {
+	public String coupons(Model model,@AuthenticationPrincipal User activeUser) {
 		SiteSetting siteSettings = siteSettingService.findOne(new Long(1));
         model.addAttribute("siteSettings",siteSettings);
         User user = userService.findByUsername(activeUser.getUsername());
@@ -51,96 +57,103 @@ public class CouponController {
 		return "allcoupons";
 	}
 	
-	/*@RequestMapping("/addcoupons")
-	public String addPages(Model model,@AuthenticationPrincipal User activeUser)
+	@RequestMapping("/addcoupon")
+	public String addCoupon(Model model,@AuthenticationPrincipal User activeUser)
 	{
-		StaticPage staticpage = new StaticPage();
+		PromoCodes promoCodes = new PromoCodes();
 		SiteSetting siteSettings = siteSettingService.findOne(new Long(1));
         model.addAttribute("siteSettings",siteSettings);
         User user = userService.findByUsername(activeUser.getUsername());
         model.addAttribute("user", user);
-        model.addAttribute("staticpage", staticpage);
-		return "addpage";
+        model.addAttribute("promoCodes", promoCodes);
+		return "addcoupon";
 	}
 	
-	@RequestMapping(value="/addcoupons", method=RequestMethod.POST)
-	public String addPagesPOST(@ModelAttribute("staticpage") StaticPage staticpage,Model model,@AuthenticationPrincipal User activeUser)
+	@RequestMapping(value="/addcoupon", method=RequestMethod.POST)
+	public String addCouponPOST(@ModelAttribute("promoCodes") PromoCodes promoCodes,BindingResult bindingResult, Model model,@AuthenticationPrincipal User activeUser)
 	{
 		SiteSetting siteSettings = siteSettingService.findOne(new Long(1));
         model.addAttribute("siteSettings",siteSettings);
         User user = userService.findByUsername(activeUser.getUsername());
         model.addAttribute("user", user);
-		//Change pagename to lowercase to compare
-		if(staticPageService.findByPagename(staticpage.getPagename()) != null) {
-			model.addAttribute("duplicatepage", true);
-			model.addAttribute("staticpage", staticpage);
-			StaticPage existingpage =staticPageService.findByPagename(staticpage.getPagename());
-			model.addAttribute("existingpage", existingpage);
-			return "addpage";
+		//Change coupon code to lowercase to compare
+		if(promoCodesService.findByPromoCode(promoCodes.getCouponCode()) != null) {
+			model.addAttribute("duplicatepromo", true);
+			model.addAttribute("promoCodes", promoCodes);
+			PromoCodes existingpromo =promoCodesService.findByPromoCode(promoCodes.getCouponCode());
+			model.addAttribute("existingpromo", existingpromo);
+			return "addcoupon";
 		}
-		
-        staticpage.setAddedBy(user.getFirstName()+" "+user.getLastName());
-        staticpage.setAddedDate(Calendar.getInstance().getTime());
-        staticPageRepository.save(staticpage);
-        model.addAttribute("staticpage", staticpage);
-        model.addAttribute("duplicatepage", false);
-		return "redirect:/pages";
+		promoCodes.setCouponCode(promoCodes.getCouponCode().toLowerCase());
+		promoCodes.setPromoType(promoCodes.getPromoType().toLowerCase());
+		/*SimpleDateFormat formatter=new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+		Date startDate = formatter.parse(promoCodes.getStartDate().toString()); 
+		Date endDate = formatter.parse(promoCodes.getExpiryDate().toString()); */
+		promoCodes.setStartDate(promoCodes.getStartDate());
+		promoCodes.setExpiryDate(promoCodes.getExpiryDate());
+        promoCodes.setAddedBy(user.getFirstName()+" "+user.getLastName());
+        promoCodes.setAddedOn(Calendar.getInstance().getTime());
+        promoCodesRepository.save(promoCodes);
+        model.addAttribute("promoCodes", promoCodes);
+        model.addAttribute("duplicatepromo", false);
+		return "redirect:/coupons/allcoupons";
 	}
 	
 	@RequestMapping("/details/{id}")
-	public String pages(@PathVariable Long id, Model model,@AuthenticationPrincipal User activeUser)
+	public String couponDetails(@PathVariable Long id, Model model,@AuthenticationPrincipal User activeUser)
 	{
-		StaticPage staticpage = staticPageService.findById(id);
+		PromoCodes promoCodes = promoCodesService.findOne(id);
 		SiteSetting siteSettings = siteSettingService.findOne(new Long(1));
         model.addAttribute("siteSettings",siteSettings);
         User user = userService.findByUsername(activeUser.getUsername());
         model.addAttribute("user", user);
-		if(staticpage != null) {
-			model.addAttribute("staticpage", staticpage);
-			return "staticpage";
+		if(promoCodes != null) {
+			model.addAttribute("promoCodes", promoCodes);
+			return "promodetails";
 		}
 		
 		return "badRequestPage";
 	}
 	
 	@RequestMapping("/active/{id}")
-	public String updatePageStatus(@PathVariable Long id, Model model,@AuthenticationPrincipal User activeUser) {
-		StaticPage staticpage = staticPageService.findById(id);
+	public String updateCouponStatus(@PathVariable Long id, Model model,@AuthenticationPrincipal User activeUser) {
+		PromoCodes promoCodes = promoCodesService.findOne(id);
         User user = userService.findByUsername(activeUser.getUsername());
         model.addAttribute("user", user);
-        if(staticpage.isPublished()) {
-        	staticpage.setPublished(false);
+        if(promoCodes.isPromoStatus()) {
+        	promoCodes.setPromoStatus(false);
         }else {
-        	staticpage.setPublished(true);
+        	promoCodes.setPromoStatus(true);
         }
-        staticpage.setUpdateBy(user.getFirstName()+" "+user.getLastName());
-        staticpage.setUpdatedDate(Calendar.getInstance().getTime());
-        staticPageRepository.save(staticpage); 
-        return "redirect:/pages";
+        promoCodes.setUpdatedBy(user.getFirstName()+" "+user.getLastName());
+        promoCodes.setUpdatedOn(Calendar.getInstance().getTime());
+        promoCodesRepository.save(promoCodes); 
+        return "redirect:/coupons/allcoupons";
 	}
 	
+
 	@RequestMapping("/edit/{id}")
-	public String editPage(@PathVariable Long id, Model model,@AuthenticationPrincipal User activeUser) {
-		StaticPage staticpage = staticPageService.findById(id);
+	public String editCoupon(@PathVariable Long id, Model model,@AuthenticationPrincipal User activeUser) {
+		PromoCodes promoCodes = promoCodesService.findOne(id);
 		SiteSetting siteSettings = siteSettingService.findOne(new Long(1));
         model.addAttribute("siteSettings",siteSettings);
         User user = userService.findByUsername(activeUser.getUsername());
         model.addAttribute("user", user);
-        model.addAttribute("staticpage",staticpage);
-        return "editpage";
+        model.addAttribute("promoCodes",promoCodes);
+        return "editpromo";
 	}
 	
 	@RequestMapping(value="/edit", method=RequestMethod.POST)
-	public String editPagePost(
-			@Valid @ModelAttribute("staticpage") StaticPage staticpage, BindingResult result,Model model,
+	public String editCouponPost(
+			@Valid @ModelAttribute("promoCodes") PromoCodes promoCodes, BindingResult result,Model model,
 			HttpServletRequest request, @AuthenticationPrincipal User activeUser) {
 		 User user = userService.findByUsername(activeUser.getUsername());
 	     model.addAttribute("user", user);
-	    staticpage.setAddedBy(staticpage.getAddedBy());
-	    staticpage.setAddedDate(staticpage.getAddedDate());
-		staticpage.setUpdateBy(user.getFirstName()+" "+user.getLastName());
-        staticpage.setUpdatedDate(Calendar.getInstance().getTime());
-		staticPageRepository.save(staticpage); 
-		return "redirect:/pages";
-	}*/
+	     promoCodes.setAddedBy(promoCodes.getAddedBy());
+	     promoCodes.setAddedOn(promoCodes.getAddedOn());
+	     promoCodes.setUpdatedBy(user.getFirstName()+" "+user.getLastName());
+	     promoCodes.setUpdatedOn(Calendar.getInstance().getTime());
+	     promoCodesRepository.save(promoCodes); 
+	     return "redirect:/coupons/allcoupons";
+	}
 }
