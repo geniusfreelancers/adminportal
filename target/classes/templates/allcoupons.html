@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:replace="common/head :: common-header"/>
+
 <body>
 <section id="container" class="">
 	<div th:replace="common/head :: navbar" />
@@ -62,13 +63,13 @@
 						</td>
 						<td class="col-md-2 text-left">
 							<strong><span>Added By : </span></strong><span th:text="${promocode.addedBy}" ></span><br/>
-							<strong><span>Added On : </span></strong><span th:text="${promocode.addedOn}" ></span><br/>
+							<strong><span>Added On : </span></strong><span th:text="${#dates.format(promocode.addedOn, 'dd-MMM-yyyy')}" ></span><br/>
 							<br/>
 							<strong><span>Modified By : </span></strong><span th:text="${promocode.updatedBy}" ></span><br/>
 							<strong><span>Modified On : </span></strong><span th:text="${promocode.updatedOn}" ></span><br/>
 							<br/>
-							<strong><span>Start : </span></strong><span th:text="${promocode.startDate}" ></span><br/>	
-							<strong><span>Expiration : </span></strong><span th:text="${promocode.expiryDate}" ></span>	
+							<strong><span>Start : </span></strong><span th:text="${#dates.format(promocode.startDate, 'dd-MMM-yyyy')}" ></span><br/>	
+							<strong><span>Expiration : </span></strong><span th:text="${#dates.format(promocode.expiryDate, 'dd-MMM-yyyy')}" ></span>	
 						</td>
 						<td class="col-md-2 text-center">
 							<strong><span th:text="${promocode.promoValue}" ></span>	

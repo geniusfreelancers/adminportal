@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:replace="common/head :: common-header"/>
+
 <body>
 <section id="container" class="">
 	<div th:replace="common/head :: navbar" />
@@ -21,7 +22,7 @@
     </div>
 
 
-	<form class="form-horizontal" th:action="@{/coupons/addcoupon}"
+	<form class="form-horizontal" th:action="@{/coupons/addcoupon}"  th:object="${promoCodes}"
 				method="post" enctype="multipart/form-data">
 				<fieldset>
 		<div class="col-md-6 col-md-offset-3">
@@ -52,8 +53,8 @@
 					<div class="row">
 					<div class="col-md-4">
 						<label for="startDate">Start Date</label>
-							<input type="date" name="startDate" class="form-control" id="startDate"
-								th:value="${promoCodes.startDate}" required="required"
+							<input type="text" name="startDate" class="form-control" id="startDate"
+								th:value="${promoCodes.startDate}" required="required" th:field="*{startDate}"
 								placeholder="Start Date" /> 
 						
 					</div>
@@ -61,8 +62,8 @@
 					<!-- Expiry -->
 					<div class="col-md-4">
 						<label for="expiryDate">Expiry Date</label>
-							<input type="date" name="expiryDate" class="form-control" id="expiryDate"
-								th:value="${promoCodes.expiryDate}" required="required"
+							<input type="text" name="expiryDate" class="form-control" id="expiryDate"
+								th:value="${promoCodes.expiryDate}" required="required" th:field="*{expiryDate}"
 								placeholder="Expiry Date" /> 				
 					</div>
 					
