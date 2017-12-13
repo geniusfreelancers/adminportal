@@ -1,5 +1,7 @@
 package com.adminportal.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,10 @@ public class PromoCodesServiceImpl implements PromoCodesService {
 	
 	public PromoCodes findByPromoCode(String couponCode){
 		return promoCodesRepository.findByCouponCode(couponCode);
+	}
+
+	public List<PromoCodes> findAll() {
+		return (List<PromoCodes>) promoCodesRepository.findAll();
 	}
 
 }
