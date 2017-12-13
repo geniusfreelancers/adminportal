@@ -88,9 +88,9 @@
 						
 						<td class="col-md-2 text-center">
 							<input hidden="hidden" name="id" th:value="${promocode.id}"/>
-							<a class="btn btn-default btn-xs edit-product" th:href="@{/pages/publish/}+${promocode.id}">
+							<a class="btn btn-default btn-xs edit-product" th:href="@{/coupons/active/}+${promocode.id}">
 							<span class="fa fa-pencil-square-o"></span> <span th:text="${promocode.promoStatus}? ${('Inactive')} : 'Active'" ></span></a>
-							<a class="btn btn-primary btn-xs edit-product" th:href="@{/pages/edit/}+${promocode.id}">
+							<a class="btn btn-primary btn-xs edit-product" th:href="@{/coupons/edit/}+${promocode.id}">
 							<span class="fa fa-pencil-square-o"></span> Edit</a>
 							<button th:id="'oneProduct-'+${promocode.id}" class="btn btn-danger btn-xs delete-product" type="submit" value="delete">
 							<span class="fa fa-times"></span> Delete</button>		
