@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
-Implementation-Title: adminportal
-Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Title: Adminportal
+Implementation-Version: 0.0.4-SNAPSHOT
 Built-By: khanad1
 Implementation-Vendor-Id: com.adminportal
 Build-Jdk: 1.8.0_121
