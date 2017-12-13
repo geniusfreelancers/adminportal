@@ -44,25 +44,42 @@
 						<td class="col-md-1">
 						<input hidden="hidden" name="id" th:value="${order.id}"/>
 						<input th:id="'selected'+${order.id}" class="checkboxProduct" type="checkbox" />
-						</td>
-						<td class="col-md-4">
+						</td>	
+
+						<td class="col-md-2">
 								<a th:href="@{/order/orderdetails/}+${order.id}">
+
 									<span th:text="${order.id}"></span>
 								</a>
 						</td>
 						
-						<td class="col-md-1">
-							<span th:text="${order.shippingAddress.firstName}"></span> 
-							<span th:text="${order.shippingAddress.lastName}"></span>
+
+						<td class="col-md-3">
+							<strong>Shipping Method:</strong> <span th:text="${order.shippingMethod}" ></span><br/>
+							<strong>Shipping Address:</strong><br/> <span th:text="${order.shippingAddress.firstName}" ></span> 
+							<span th:text="${order.shippingAddress.lastName}" ></span><br/>
+							<span th:text="${order.shippingAddress.ShippingAddressStreet1}" ></span><br/>
+							<span th:text="${order.shippingAddress.ShippingAddressStreet2}" ></span><br/>
+							<span th:text="${order.shippingAddress.ShippingAddressCity}" ></span><br/>
+							<span th:text="${order.shippingAddress.ShippingAddressState}" ></span><br/>
+							<span th:text="${order.shippingAddress.ShippingAddressZipcode}" ></span><br/>
+							<span th:text="${order.shippingAddress.ShippingAddressCountry}" ></span><br/>
 						</td>
-						<td th:text="${order.shippingMethod}" class="col-md-1"></td>
 						<td class="col-md-2">
-							<strong>Our Price: </strong> <span th:text="${order.orderTotal}"></span>
+							<strong>Email:</strong> <span th:text="${order.orderEmail}" ></span><br/>
+							<strong>Phone:</strong> <span th:text="${order.orderPhone}" ></span><br/>
+						</td>
+
+						
+						
+
+						<td class="col-md-1 text-center">
+							<strong>$</strong> <span th:text="${order.orderTotal}"></span>
 							
 							
 						</td>
-						<td th:text="${order.orderStatus}" class="col-md-1"></td>
-						<td class="col-md-2">
+						<td th:text="${order.orderStatus}" class="col-md-1 text-center"></td>
+						<td class="col-md-2 text-center">
 							<input hidden="hidden" name="id" th:value="${order.id}"/>
 							<a class="btn btn-primary btn-xs edit-product" th:href="@{/product/updateProduct?id=}+${order.id}">
 							<span class="fa fa-pencil-square-o"></span> Edit</a>
@@ -88,6 +105,7 @@
 			$("#productListTable").DataTable({
 				"lengthMenu": [[5,10,15,20,-1],[5,10,15,20,"All"]],
 				"ordering": false,
+			//	"order": [[ 2, "desc" ]],
 				stateSave: true
 			});
 		});
