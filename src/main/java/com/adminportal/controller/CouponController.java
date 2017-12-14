@@ -149,12 +149,14 @@ public class CouponController {
 			HttpServletRequest request, @AuthenticationPrincipal User activeUser) {
 		 User user = userService.findByUsername(activeUser.getUsername());
 	     model.addAttribute("user", user);
-	     PromoCodes newPromoCodes = promoCodesService.findOne(promoCodes.getId());
-/*	     newPromoCodes.setAddedBy(promoCodes.getAddedBy());
-	     newPromoCodes.setAddedOn(promoCodes.getAddedOn());*/
-	     newPromoCodes.setUpdatedBy(user.getFirstName()+" "+user.getLastName());
-	     newPromoCodes.setUpdatedOn(Calendar.getInstance().getTime());
-	     promoCodesRepository.save(newPromoCodes); 
+	     //PromoCodes newPromoCodes = promoCodesService.findOne(promoCodes.getId());
+	     promoCodes.setAddedBy(promoCodes.getAddedBy());
+	     promoCodes.setAddedOn(promoCodes.getAddedOn());
+	     promoCodes.setStartDate(promoCodes.getStartDate());
+	     promoCodes.setExpiryDate( promoCodes.getExpiryDate());
+	     promoCodes.setUpdatedBy(user.getFirstName()+" "+user.getLastName());
+	     promoCodes.setUpdatedOn(Calendar.getInstance().getTime());
+	     promoCodesRepository.save(promoCodes); 
 	     return "redirect:/coupons/allcoupons";
 	}
 }
