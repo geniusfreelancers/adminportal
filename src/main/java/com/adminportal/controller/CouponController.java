@@ -1,5 +1,6 @@
 package com.adminportal.controller;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -54,6 +55,29 @@ public class CouponController {
 		return "allcoupons";
 	}
 	
+	
+	@RequestMapping("/allactivecoupons")
+	public String activeCoupons(Model model,@AuthenticationPrincipal User activeUser) {
+		SiteSetting siteSettings = siteSettingService.findOne(new Long(1));
+        model.addAttribute("siteSettings",siteSettings);
+        User user = userService.findByUsername(activeUser.getUsername());
+        model.addAttribute("user", user);
+		List<PromoCodes> promoCodesList = promoCodesService.findAll();
+		List<PromoCodes>  newpromoCodesList = new ArrayList<PromoCodes>();
+		if(promoCodesList == null) {
+			model.addAttribute("emptyPage", true);
+		}else {
+			for (PromoCodes promoCodes : promoCodesList) {
+				if(promoCodes.isPromoStatus()) {
+					newpromoCodesList.add(promoCodes);
+				}
+			}
+			model.addAttribute("emptyPage", false);
+		}
+		model.addAttribute("promoCodesList", newpromoCodesList);
+		return "allcoupons";
+	}
+	
 	@RequestMapping("/addcoupon")
 	public String addCoupon(Model model,@AuthenticationPrincipal User activeUser)
 	{
@@ -76,6 +100,7 @@ public class CouponController {
 		//Change coupon code to lowercase to compare
 		if(promoCodesService.findByPromoCode(promoCodes.getCouponCode()) != null) {
 			model.addAttribute("startBefore", false);
+			model.addAttribute("samedate", false);
 			model.addAttribute("duplicatepromo", true);
 			model.addAttribute("promoCodes", promoCodes);
 			PromoCodes existingpromo =promoCodesService.findByPromoCode(promoCodes.getCouponCode());
@@ -85,9 +110,18 @@ public class CouponController {
 		if(promoCodes.getStartDate().after(promoCodes.getExpiryDate())) {
 			model.addAttribute("promoCodes", promoCodes);
 			model.addAttribute("duplicatepromo", false);
+			model.addAttribute("samedate", false);
 			model.addAttribute("startBefore", true);
 			return "addcoupon";
 		}
+		if(promoCodes.getStartDate().equals(promoCodes.getExpiryDate())) {
+			model.addAttribute("promoCodes", promoCodes);
+			model.addAttribute("duplicatepromo", false);
+			model.addAttribute("startBefore", false);
+			model.addAttribute("samedate", true);
+			return "addcoupon";
+		}
+		
 		promoCodes.setCouponCode(promoCodes.getCouponCode().toLowerCase());
 		promoCodes.setPromoType(promoCodes.getPromoType().toLowerCase());
 		/*SimpleDateFormat formatter=new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
@@ -120,7 +154,7 @@ public class CouponController {
 	}
 	
 	@RequestMapping("/active/{id}")
-	public String updateCouponStatus(@PathVariable Long id, Model model,@AuthenticationPrincipal User activeUser) {
+	public String updateCouponStatus(@PathVariable Long id, Model model,@AuthenticationPrincipal User activeUser,HttpServletRequest request) {
 		PromoCodes promoCodes = promoCodesService.findOne(id);
         User user = userService.findByUsername(activeUser.getUsername());
         model.addAttribute("user", user);
@@ -132,6 +166,13 @@ public class CouponController {
         promoCodes.setUpdatedBy(user.getFirstName()+" "+user.getLastName());
         promoCodes.setUpdatedOn(Calendar.getInstance().getTime());
         promoCodesRepository.save(promoCodes); 
+        if(request.getHeader("referer")!= null) {
+            String referrer = request.getHeader("referer");
+            String newref = referrer.substring(referrer.length()-24,referrer.length());
+    		if(newref.equalsIgnoreCase("coupons/allactivecoupons")){
+            	return "redirect:/coupons/allactivecoupons";
+            }
+            }
         return "redirect:/coupons/allcoupons";
 	}
 	
@@ -154,6 +195,7 @@ public class CouponController {
 		 User user = userService.findByUsername(activeUser.getUsername());
 	     model.addAttribute("user", user);
 	     //PromoCodes newPromoCodes = promoCodesService.findOne(promoCodes.getId());
+	     // problem with Added bY and Added on is getting as null nee to check
 	     promoCodes.setAddedBy(promoCodes.getAddedBy());
 	     promoCodes.setAddedOn(promoCodes.getAddedOn());
 	     promoCodes.setStartDate(promoCodes.getStartDate());

@@ -33,7 +33,9 @@
 						<a th:href="@{/coupons/edit/}+${existingpromo.id}"><span class="uppercase" th:text="${existingpromo.couponCode}"></span></a> 
 						coupon
 					</div>
-					
+					<div th:if="${samedate}" class="alert alert-danger">
+						Start Date and Expiry Date cannot be same
+					</div>
 					<div th:if="${startBefore}" class="alert alert-danger">
 						Expiry Date cannot be before Start Date
 					</div>

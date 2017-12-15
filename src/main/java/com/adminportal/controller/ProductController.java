@@ -315,6 +315,7 @@ public class ProductController {
 		User user = userService.findByUsername(activeUser.getUsername());
         model.addAttribute("user", user);
 		List<Product> productList = productService.findAll();
+		// Only get published products need to implement that logic here
 		model.addAttribute("productList", productList);
 
 		return "productList";
