@@ -1,8 +1,6 @@
 package com.adminportal.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.adminportal.domain.PromoCodes;
 import com.adminportal.domain.SiteSetting;
-import com.adminportal.domain.StaticPage;
 import com.adminportal.domain.User;
 import com.adminportal.repository.PromoCodesRepository;
 import com.adminportal.service.PromoCodesService;
@@ -78,10 +75,17 @@ public class CouponController {
         model.addAttribute("user", user);
 		//Change coupon code to lowercase to compare
 		if(promoCodesService.findByPromoCode(promoCodes.getCouponCode()) != null) {
+			model.addAttribute("startBefore", false);
 			model.addAttribute("duplicatepromo", true);
 			model.addAttribute("promoCodes", promoCodes);
 			PromoCodes existingpromo =promoCodesService.findByPromoCode(promoCodes.getCouponCode());
 			model.addAttribute("existingpromo", existingpromo);
+			return "addcoupon";
+		}
+		if(promoCodes.getStartDate().after(promoCodes.getExpiryDate())) {
+			model.addAttribute("promoCodes", promoCodes);
+			model.addAttribute("duplicatepromo", false);
+			model.addAttribute("startBefore", true);
 			return "addcoupon";
 		}
 		promoCodes.setCouponCode(promoCodes.getCouponCode().toLowerCase());

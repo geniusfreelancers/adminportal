@@ -475,9 +475,14 @@
 <script th:src="@{/js/jquery.slimscroll.min.js}"></script>	
 	
 	<script>
-  $("#startDate" ).datepicker({
+  $("#startDate").datepicker({
 		inline: true
 	});
+  
+  $("#expiryDate").datepicker({
+		inline: true
+	});
+  
   
   $( "#dialog-link, #icons li" ).hover(
 			function() {

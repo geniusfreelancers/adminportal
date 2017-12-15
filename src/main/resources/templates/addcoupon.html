@@ -33,15 +33,27 @@
 						<a th:href="@{/coupons/edit/}+${existingpromo.id}"><span class="uppercase" th:text="${existingpromo.couponCode}"></span></a> 
 						coupon
 					</div>
+					
+					<div th:if="${startBefore}" class="alert alert-danger">
+						Expiry Date cannot be before Start Date
+					</div>
 					<!-- title -->
 					<div class="form-group">
 					<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-8">
 						<label for="couponCode">Coupon Code</label>
 						
 							<input type="text" name="couponCode" class="form-control" id="couponCode"
 								th:value="${promoCodes.couponCode}" required="required"
 								placeholder="Coupon Code" /> 
+						
+					</div>
+					<!-- Promo Use Count -->
+					<div class="col-md-4">
+						<label for="promoUseCount">Promo Use Count</label>
+							<input type="number" name="promoUseCount" class="form-control" id="promoUseCount" step="1"
+								th:value="${promoCodes.promoUseCount}" required="required"
+								placeholder="Promo Use Count" /> 
 						
 					</div>
 					
@@ -51,7 +63,7 @@
 					<!-- Start Expiry Dates -->
 					<div class="form-group">
 					<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-6">
 						<label for="startDate">Start Date</label>
 							<input type="text" name="startDate" class="form-control" id="startDate"
 								th:value="${promoCodes.startDate}" required="required" th:field="*{startDate}"
@@ -60,21 +72,14 @@
 					</div>
 					
 					<!-- Expiry -->
-					<div class="col-md-4">
+					<div class="col-md-6">
 						<label for="expiryDate">Expiry Date</label>
 							<input type="text" name="expiryDate" class="form-control" id="expiryDate"
 								th:value="${promoCodes.expiryDate}" required="required" th:field="*{expiryDate}"
 								placeholder="Expiry Date" /> 				
 					</div>
 					
-					<!-- Promo Use Count -->
-					<div class="col-md-4">
-						<label for="promoUseCount">Promo Use Count</label>
-							<input type="number" name="promoUseCount" class="form-control" id="promoUseCount" step="1"
-								th:value="${promoCodes.promoUseCount}" required="required"
-								placeholder="Promo Use Count" /> 
-						
-					</div>
+					
 				
 					</div>
 					</div>
