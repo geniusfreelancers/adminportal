@@ -36,12 +36,20 @@
 					<!-- title -->
 					<div class="form-group">
 					<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-8">
 						<label for="couponCode">Coupon Code</label>
 						
 							<input type="text" name="couponCode" class="form-control" id="couponCode"
 								th:value="${promoCodes.couponCode}" required="required"
 								placeholder="Coupon Code" /> 
+						
+					</div>
+						<!-- Promo Use Count -->
+					<div class="col-md-4">
+						<label for="promoUseCount">Promo Use Count</label>
+							<input type="number" name="promoUseCount" class="form-control" id="promoUseCount" step="1"
+								th:value="${promoCodes.promoUseCount}" required="required"
+								placeholder="Promo Use Count" /> 
 						
 					</div>
 					
@@ -67,14 +75,7 @@
 								placeholder="Expiry Date" /> 				
 					</div>
 					
-					<!-- Promo Use Count -->
-					<div class="col-md-4">
-						<label for="promoUseCount">Promo Use Count</label>
-							<input type="number" name="promoUseCount" class="form-control" id="promoUseCount" step="1"
-								th:value="${promoCodes.promoUseCount}" required="required"
-								placeholder="Promo Use Count" /> 
-						
-					</div>
+				
 				
 					</div>
 					</div>
@@ -163,15 +164,15 @@
 					<div class="col-md-6">
 						<label for="addedBy">Added By</label>
 							<input type="text" name="addedBy" class="form-control" id="addedBy"
-								th:value="${promoCodes.addedBy}" required="required"
+								th:value="${promoCodes.addedBy}" required="required" th:field="*{promoCodes.addedBy}"
 								placeholder="Added By" disabled="disabled"/> 
 						
 					</div>
 					
 					<div class="col-md-6">
 						<label for="addedOn">Added On</label>
-							<input type="text" name="addedOn" class="form-control" id="addedOn" th:datetime="${promoCodes.addedOn}"
-								th:value="${promoCodes.addedOn}" required="required"
+							<input type="text" name="addedOn" class="form-control" id="addedOn"
+								th:value="${promoCodes.addedOn}" required="required" th:field="*{promoCodes.addedOn}"
 								placeholder="Added On" disabled="disabled"/> 
 						
 					</div>
