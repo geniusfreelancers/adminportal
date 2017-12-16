@@ -15,7 +15,7 @@
             <h3 class="page-header"><i class="fa fa-file" aria-hidden="true"></i> ADD COUPON</h3>
             <ol class="breadcrumb">
                 <li><i class="fa fa-home"></i><a th:href="@{/}">Home</a></li>
-                <li><i class="fa fa-file-text-o" aria-hidden="true"></i><a th:href="@{/coupons/allcoupons}">All Coupons</a></li>
+                <li><i class="fa fa-file-text-o" aria-hidden="true"></i><a th:href="@{/coupons/allcoupons/all}">All Coupons</a></li>
                 <li><i class="fa fa-file" aria-hidden="true"></i>Add Coupon</li>
             </ol>
         </div>
@@ -164,6 +164,15 @@
 					</div>
 					</div>
 					
+					<!-- Main Content -->
+					<div class="form-group">
+						<label for="couponPolicy">Coupon Conditions &amp; Policy</label>
+						
+							<textarea class="form-control" id="couponPolicy" th:text="${promoCodes.couponPolicy}"
+								name="couponPolicy" rows="5" th:value="${promoCodes.couponPolicy}"
+								placeholder="Coupon Condition &amp; Policy"></textarea>						
+					</div>
+					
 					<div class="form-group">
 						<div class="col-md-2"></div>
 						<div class="col-md-8 text-center">
@@ -173,15 +182,8 @@
 						</div>
 					</div>	
 					
-					<!-- Main Content 
-					<div class="form-group">
-						<label for="maincontent">Page Main Content</label>
-						
-							<textarea class="form-control" id="maincontent" th:text="${promoCodes.maincontent}"
-								name="maincontent" rows="5" th:value="${promoCodes.maincontent}"
-								placeholder="Main Content"></textarea>						
-					</div>
-					-->
+					
+					
 							
 					
 				

@@ -39,44 +39,53 @@ public class CouponController {
 	@Autowired
 	private PromoCodesRepository promoCodesRepository;
 	
-	@RequestMapping("/allcoupons")
-	public String coupons(Model model,@AuthenticationPrincipal User activeUser) {
+	@RequestMapping("/allcoupons/{type}")
+	public String coupons(@PathVariable String type, Model model,@AuthenticationPrincipal User activeUser) {
 		SiteSetting siteSettings = siteSettingService.findOne(new Long(1));
         model.addAttribute("siteSettings",siteSettings);
         User user = userService.findByUsername(activeUser.getUsername());
         model.addAttribute("user", user);
 		List<PromoCodes> promoCodesList = promoCodesService.findAll();
-		model.addAttribute("promoCodesList", promoCodesList);
 		if(promoCodesList == null) {
 			model.addAttribute("emptyPage", true);
 		}else {
-			model.addAttribute("emptyPage", false);
-		}
-		return "allcoupons";
-	}
-	
-	
-	@RequestMapping("/allactivecoupons")
-	public String activeCoupons(Model model,@AuthenticationPrincipal User activeUser) {
-		SiteSetting siteSettings = siteSettingService.findOne(new Long(1));
-        model.addAttribute("siteSettings",siteSettings);
-        User user = userService.findByUsername(activeUser.getUsername());
-        model.addAttribute("user", user);
-		List<PromoCodes> promoCodesList = promoCodesService.findAll();
-		List<PromoCodes>  newpromoCodesList = new ArrayList<PromoCodes>();
-		if(promoCodesList == null) {
-			model.addAttribute("emptyPage", true);
-		}else {
+		
+		if(type.equalsIgnoreCase("active")) {
+			List<PromoCodes>  newpromoCodesList = new ArrayList<PromoCodes>();
+			
 			for (PromoCodes promoCodes : promoCodesList) {
 				if(promoCodes.isPromoStatus()) {
 					newpromoCodesList.add(promoCodes);
 				}
+				if(newpromoCodesList == null) {
+					model.addAttribute("emptyPage", true);
+				}else {
+					model.addAttribute("emptyPage", false);
+					model.addAttribute("promoCodesList", newpromoCodesList);
+				}
 			}
+		}else if(type.equalsIgnoreCase("inactive")) {
+			List<PromoCodes>  newpromoCodesList = new ArrayList<PromoCodes>();
+			
+			for (PromoCodes promoCodes : promoCodesList) {
+				if(promoCodes.isPromoStatus() == false) {
+					newpromoCodesList.add(promoCodes);
+				}
+				if(newpromoCodesList == null) {
+					model.addAttribute("emptyPage", true);
+				}else {
+					model.addAttribute("emptyPage", false);
+					model.addAttribute("promoCodesList", newpromoCodesList);
+				}
+			}
+		}else {
+			model.addAttribute("promoCodesList", promoCodesList);
+			
 			model.addAttribute("emptyPage", false);
-		}
-		model.addAttribute("promoCodesList", newpromoCodesList);
+		}}
 		return "allcoupons";
 	}
+	
 	
 	@RequestMapping("/addcoupon")
 	public String addCoupon(Model model,@AuthenticationPrincipal User activeUser)
@@ -134,7 +143,7 @@ public class CouponController {
         promoCodesRepository.save(promoCodes);
         model.addAttribute("promoCodes", promoCodes);
         model.addAttribute("duplicatepromo", false);
-		return "redirect:/coupons/allcoupons";
+		return "redirect:/coupons/allcoupons/all";
 	}
 	
 	@RequestMapping("/details/{id}")
@@ -148,9 +157,9 @@ public class CouponController {
 		if(promoCodes != null) {
 			model.addAttribute("promoCodes", promoCodes);
 			return "promodetails";
+		}else {
+			return "redirect:/coupons/allcoupons/all";
 		}
-		
-		return "badRequestPage";
 	}
 	
 	@RequestMapping("/active/{id}")
@@ -168,12 +177,12 @@ public class CouponController {
         promoCodesRepository.save(promoCodes); 
         if(request.getHeader("referer")!= null) {
             String referrer = request.getHeader("referer");
-            String newref = referrer.substring(referrer.length()-24,referrer.length());
-    		if(newref.equalsIgnoreCase("coupons/allactivecoupons")){
-            	return "redirect:/coupons/allactivecoupons";
+            String newref = referrer.substring(referrer.length()-6,referrer.length());
+    		if(newref.equalsIgnoreCase("active")){
+            	return "redirect:/coupons/allcoupons/active";
             }
             }
-        return "redirect:/coupons/allcoupons";
+        return "redirect:/coupons/allcoupons/all";
 	}
 	
 
@@ -205,4 +214,19 @@ public class CouponController {
 	     promoCodesRepository.save(promoCodes); 
 	     return "redirect:/coupons/allcoupons";
 	}
+	
+	@RequestMapping(value="/allcoupons/remove", method=RequestMethod.POST)
+	public String remove(
+			@ModelAttribute("id") String id, Model model
+			){
+		//productService.removeOne(Long.parseLong(id.substring(11)));
+		promoCodesService.removeOne(Long.parseLong(id.substring(11)));
+		List<PromoCodes> productList = promoCodesService.findAll();
+		
+		model.addAttribute("productList", productList);
+		
+		return "redirect:/product/productList";
+		
+	}
+	
 }
