@@ -28,4 +28,7 @@ public class PromoCodesServiceImpl implements PromoCodesService {
 		return (List<PromoCodes>) promoCodesRepository.findAll();
 	}
 
+	public void removeOne(Long id){
+		promoCodesRepository.delete(id);
+	}
 }

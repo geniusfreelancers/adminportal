@@ -135,7 +135,7 @@ $(document).ready(function(){
 		var id=$(this).attr('id');
 		
 		bootbox.confirm({
-			message: "Are you sure to remove this product? It can't be undone.",
+			message: "Are you sure to remove this item? It can't be undone.",
 			buttons:{
 				cancel:{
 					label:'<i class="fa fa-times"></i> Cancel'
@@ -173,7 +173,7 @@ $(document).ready(function(){
 		/*]]>*/
 		
 		bootbox.confirm({
-			message: "Are you sure to remove all selected products? It can't be undone.",
+			message: "Are you sure to remove all selected items? It can't be undone.",
 			buttons:{
 				cancel:{
 					label:'<i class="fa fa-times"></i> Cancel'

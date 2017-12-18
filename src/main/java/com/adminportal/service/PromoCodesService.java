@@ -11,4 +11,6 @@ public interface PromoCodesService {
 	PromoCodes findByPromoCode(String couponCode);
 
 	List<PromoCodes> findAll();
+	
+	void removeOne(Long id);
 }

@@ -48,7 +48,14 @@
 
 <link rel="icon" href="/image/logo-icon.png"/>
 <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
-<script>tinymce.init({ selector:'textarea' });</script>
+<script>tinymce.init({
+	  selector: 'textarea',
+	  height: 500,
+	  theme: 'modern',
+	  plugins: 'code print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount imagetools contextmenu colorpicker textpattern help',
+	  toolbar1: 'code | formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+	  image_advtab: true
+	 });</script>
 
 
 </head>
@@ -373,10 +380,10 @@
                         <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                     <ul class="sub">
-                    	<li><a class="" th:href="@{/coupons/allcoupons}">All Coupons</a></li>
-                        <li><a class="" th:href="@{/coupons/allactivecoupons}">Active Coupons</a></li>
+                    	<li><a class="" th:href="@{/coupons/allcoupons/all}">All Coupons</a></li>
+                        <li><a class="" th:href="@{/coupons/allcoupons/active}">Active Coupons</a></li>
+                         <li><a class="" th:href="@{/coupons/allcoupons/inactive}">Inactive Coupons</a></li>
                         <li><a class="" th:href="@{/coupons/addcoupon}"><span>Add Coupon</span></a></li>
-                        <li><a class="" th:href="@{/coupons/usedcoupons}">Coupons Used</a></li>
                     </ul>
                 </li>
                 <li>
@@ -395,8 +402,8 @@
                         <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                     <ul class="sub">
-                        <li><a class="" th:href="@{/settings.html}">General</a></li>
-                        <li><a class="" th:href="@{/homesettings.html}">Home Page</a></li>  
+                        <li><a class="" th:href="@{/settings}">General</a></li>
+                        <li><a class="" th:href="@{/homesettings}">Home Page</a></li>  
                     </ul>
                 </li>
 

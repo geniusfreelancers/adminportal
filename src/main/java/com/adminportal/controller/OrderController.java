@@ -11,7 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.adminportal.domain.Order;
+import com.adminportal.domain.OrderLog;
 import com.adminportal.domain.User;
+import com.adminportal.service.OrderLogService;
 import com.adminportal.service.OrderService;
 import com.adminportal.service.UserService;
 import com.braintreegateway.BraintreeGateway;
@@ -38,6 +40,8 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 	@Autowired
+	private OrderLogService orderLogService;
+	@Autowired
 	private UserService userService;
 	
 	@RequestMapping("/orderList")
@@ -57,7 +61,9 @@ public class OrderController {
 	}
 	
 	@RequestMapping(value = "/orderdetails/{orderId}")
-	   public String orderDetailsPage(@PathVariable Long orderId, Model model) {
+	   public String orderDetailsPage(@PathVariable Long orderId, Model model,@AuthenticationPrincipal User activeUser) {
+			User user = userService.findByUsername(activeUser.getUsername());
+	        model.addAttribute("user", user);
 	       Transaction transaction;
 	       Order order;
 	       try {
@@ -104,7 +110,14 @@ public class OrderController {
 	   		model.addAttribute("order",order);
 	   		model.addAttribute("currentStatus",currentStatus);
 	   		model.addAttribute("cartItemList", order.getCartItemList());
-
+	   		List<OrderLog> orderLogList = orderLogService.findByOrderByOrderByIdDesc(order);
+	   		if(orderLogList.isEmpty()) {
+	   			model.addAttribute("emptyLog",true);
+	   		}else {
+	   			model.addAttribute("emptyLog",false);
+	   			model.addAttribute("orderLogList",orderLogList);
+	   		}
+	   		
 	       return "orderdetails";
 	   }
 	

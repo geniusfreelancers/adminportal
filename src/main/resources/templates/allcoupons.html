@@ -12,10 +12,10 @@
 <!-- Main Section Starts -->
 	    <div class="row">
         <div class="col-lg-12">
-            <h3 class="page-header"><i class="fa fa-laptop"></i> <strong>All Pages</strong></h3>
+            <h3 class="page-header"><i class="fa fa-laptop"></i> <strong>All Coupons</strong></h3>
             <ol class="breadcrumb">
                 <li><i class="fa fa-home"></i><a th:href="@{/}">Home</a></li>
-                <li><i class="fa fa-file-text-o" aria-hidden="true"></i>All Pages</li>
+                <li><i class="fa fa-file-text-o" aria-hidden="true"></i>All Coupons</li>
             </ol>
         </div>
     </div>
@@ -32,7 +32,7 @@
 						<th class="text-center">ID</th>
 						<th class="text-center">Promo Code</th>
 						<th class="text-center">Start / Expiry Date</th>
-						<th class="text-center">Promo Value</th>
+						<th class="text-center">Code Used</th>
 						<th class="text-center">Promo Details</th>
 						<th class="text-center">Status</th>
 						<th class="text-center"><i class="icon_cogs"></i> Action</th>
@@ -62,6 +62,8 @@
 								</a>
 						</td>
 						<td class="col-md-2 text-left">
+							<strong><span>Promo Value : </span></strong><strong><span th:if="(${promocode.PercentOrDollar} == 'dollar')">$</span><span th:text="${promocode.promoValue}"></span>	
+							<span th:if="(${promocode.PercentOrDollar} == 'percent')">%</span></strong><br/>
 							<strong><span>Added By : </span></strong><span th:text="${promocode.addedBy}" ></span><br/>
 							<strong><span>Added On : </span></strong><span th:text="${#dates.format(promocode.addedOn, 'dd-MMM-yyyy')}" ></span><br/>
 							<br/>
@@ -72,17 +74,15 @@
 							<strong><span>Expiration : </span></strong><span th:text="${#dates.format(promocode.expiryDate, 'dd-MMM-yyyy')}" ></span>	
 						</td>
 						<td class="col-md-2 text-center">
-							<strong><span th:text="${promocode.promoValue}" ></span>	
-							<span th:text="${promocode.PercentOrDollar}" ></span></strong>
+							<span th:text="${promocode.promoUsedCount}" ></span>
 						</td>
 						<td class="col-md-2 text-left">
 							<strong><span>Cart Minimum : </span>$</strong><span th:text="${promocode.cartTotal}" ></span><br/>
-							<strong><span>Minimum CartItems: </span></strong><span th:text="${promocode.cartItemQty}" ></span> item(s)<br/>
+							<strong><span>Minimum Items: </span></strong><span th:text="${promocode.cartItemQty}" ></span> item(s)<br/>
 							<br/>
 							<strong><span>Promo Type : </span></strong><span class="uppercase" th:text="${promocode.promoType}" ></span><br/>
 							<br/>
 							<strong><span>Promo Count : </span></strong><span class="uppercase" th:text="${promocode.promoUseCount}" ></span><br/>
-							<strong><span>Used Count : </span></strong><span class="uppercase" th:text="${promocode.promoUsedCount}" ></span>
 						</td>
 						<td th:text="${promocode.promoStatus}? ${#strings.toUpperCase('Active')} : ${#strings.toUpperCase('Inactive')}" 
 						class="col-md-1 text-center"></td>
@@ -114,8 +114,8 @@
 		$(document).ready(function(){
 			$("#productListTable").DataTable({
 				"lengthMenu": [[5,10,15,20,-1],[5,10,15,20,"All"]],
-				"ordering": false,
-			//	"order": [[ 2, "desc" ]],
+				//"ordering": false,
+				"order": [[ 2, "desc" ]],
 				stateSave: true
 			});
 		});
